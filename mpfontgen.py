@@ -42,6 +42,8 @@ class StartQT5(QMainWindow):
         self.ui.shadowDistanceBox.valueChanged.connect(self.shadow_dist_changed)
         self.ui.shadowSizeBox.valueChanged.connect(self.shadow_size_changed)
         self.ui.strokeWidthBox.valueChanged.connect(self.stroke_size_changed)
+        self.ui.dropShadowGroupBox.toggled.connect(self.update_values)
+        self.ui.strokeGroupBox.toggled.connect(self.update_values)
 
         #Update UI
         self.update_values()
@@ -123,9 +125,10 @@ class StartQT5(QMainWindow):
         self.update_values()
 
     def font_dialog(self):
-        font, ok = QFontDialog.getFont(QFont(), self)
+        font, ok = QFontDialog.getFont(self.font, self)
         if ok:
             self.font = font
+        self.update_values()
 
     def get_path_for_char(self, char, baseline):
         ret = []

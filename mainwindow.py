@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainwindow.ui'
 #
-# Created: Wed Oct 15 21:12:39 2014
+# Created: Thu Oct 16 20:13:02 2014
 #      by: PyQt5 UI code generator 5.3.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -161,23 +161,26 @@ class Ui_MainWindow(object):
         self.shadowDistanceBox.setObjectName("shadowDistanceBox")
         self.formLayout_4.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.shadowDistanceBox)
         self.widget = QPaintArea(self.centralwidget)
-        self.widget.setGeometry(QtCore.QRect(440, 30, 351, 551))
+        self.widget.setGeometry(QtCore.QRect(440, 30, 351, 501))
         self.widget.setObjectName("widget")
         self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(440, 590, 160, 100))
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(440, 550, 160, 134))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.pushButton = QtWidgets.QPushButton(self.verticalLayoutWidget)
-        self.pushButton.setObjectName("pushButton")
-        self.verticalLayout.addWidget(self.pushButton)
-        self.pushButton_2 = QtWidgets.QPushButton(self.verticalLayoutWidget)
-        self.pushButton_2.setObjectName("pushButton_2")
-        self.verticalLayout.addWidget(self.pushButton_2)
-        self.pushButton_3 = QtWidgets.QPushButton(self.verticalLayoutWidget)
-        self.pushButton_3.setObjectName("pushButton_3")
-        self.verticalLayout.addWidget(self.pushButton_3)
+        self.exportSeperateButton = QtWidgets.QPushButton(self.verticalLayoutWidget)
+        self.exportSeperateButton.setObjectName("exportSeperateButton")
+        self.verticalLayout.addWidget(self.exportSeperateButton)
+        self.exportGroupButton = QtWidgets.QPushButton(self.verticalLayoutWidget)
+        self.exportGroupButton.setObjectName("exportGroupButton")
+        self.verticalLayout.addWidget(self.exportGroupButton)
+        self.saveSettingsButton = QtWidgets.QPushButton(self.verticalLayoutWidget)
+        self.saveSettingsButton.setObjectName("saveSettingsButton")
+        self.verticalLayout.addWidget(self.saveSettingsButton)
+        self.loadSettingsButton = QtWidgets.QPushButton(self.verticalLayoutWidget)
+        self.loadSettingsButton.setObjectName("loadSettingsButton")
+        self.verticalLayout.addWidget(self.loadSettingsButton)
         MainWindow.setCentralWidget(self.centralwidget)
         self.actionAbout = QtWidgets.QAction(MainWindow)
         self.actionAbout.setObjectName("actionAbout")
@@ -208,9 +211,10 @@ class Ui_MainWindow(object):
         self.shadowAngleLabel.setText(_translate("MainWindow", "Shadow Angle"))
         self.shadowSizeLabel.setText(_translate("MainWindow", "Shadow Size"))
         self.shadowDistanceLabel.setText(_translate("MainWindow", "Shadow Distance"))
-        self.pushButton.setText(_translate("MainWindow", "Export Individual"))
-        self.pushButton_2.setText(_translate("MainWindow", "Export Group"))
-        self.pushButton_3.setText(_translate("MainWindow", "Save Settings"))
+        self.exportSeperateButton.setText(_translate("MainWindow", "Export Individual"))
+        self.exportGroupButton.setText(_translate("MainWindow", "Export Group"))
+        self.saveSettingsButton.setText(_translate("MainWindow", "Save Settings"))
+        self.loadSettingsButton.setText(_translate("MainWindow", "Load Settings"))
         self.actionAbout.setText(_translate("MainWindow", "About"))
         self.actionExit.setText(_translate("MainWindow", "Exit"))
 

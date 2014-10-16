@@ -1,9 +1,10 @@
 import sys
 import math
+import os
 from PyQt5 import QtCore
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import QApplication
-from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import QMainWindow, QFileDialog
 from PyQt5.QtWidgets import QFontDialog, QColorDialog
 import mainwindow
 
@@ -20,7 +21,7 @@ class StartQT5(QMainWindow):
         self.character_set = ('abcdefghijklmnopqrstuvwxyz'
                               'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
                               '1234567890[]\'#;,./\\`¬!"£$'
-                              '%^&*()_+{}:@~?><|')
+                              '%^&*()_+{}:@~?><|¢€™¡∞•ª–≠“‘”’')
         self.fill_color = QColor(0, 0, 0, 255)
         self.fill_angle = 0.0
 
@@ -44,6 +45,7 @@ class StartQT5(QMainWindow):
         self.ui.strokeWidthBox.valueChanged.connect(self.stroke_size_changed)
         self.ui.dropShadowGroupBox.toggled.connect(self.update_values)
         self.ui.strokeGroupBox.toggled.connect(self.update_values)
+        self.ui.exportSeperateButton.clicked.connect(self.export_seperate)
 
         #Update UI
         self.update_values()
@@ -169,6 +171,57 @@ class StartQT5(QMainWindow):
             stroke_path = stroker.createStroke(stroke_path)
             ret.append((stroke_path, stroke_brush))
         return ret
+
+    def export_seperate(self):
+        target_folder = QFileDialog.getExistingDirectory(self)
+        output_collection = {}
+
+        font_info = QFontMetrics(self.font)
+        max_width = font_info.maxWidth()
+        max_height = font_info.height()
+
+        for char in self.character_set:
+            baseline = QtCore.QPointF(0, (font_info.height() +
+                                          font_info.leading()))
+            current = self.get_path_for_char(char, baseline)
+            output_collection[char] = current
+            compound = QPainterPath()
+            for path, brush in current:
+                compound += path
+            bounding_rect = compound.boundingRect()
+            max_width = max(max_width, bounding_rect.width())
+            max_height = max(max_height, bounding_rect.height())
+
+        for char in output_collection:
+            current = output_collection[char]
+
+            pixmap_width = max_width
+            pixmap_height = max_height
+            compound = QPainterPath()
+            for path, brush in current:
+                compound += path
+            bounding_rect = compound.boundingRect()
+            compound_width = bounding_rect.width()
+            if compound_width < pixmap_width:
+                pixmap_width = compound_width
+
+            pixmap = QPixmap(pixmap_width + 2, pixmap_height + 2)
+            pixmap.fill(QtCore.Qt.transparent)
+
+            painter = QPainter(pixmap)
+            painter.translate(-bounding_rect.left() + 1,
+                              -font_info.descent() + 1)
+            painter.setBackground(QtCore.Qt.transparent)
+            painter.setRenderHint(QPainter.HighQualityAntialiasing)
+            painter.setPen(QtCore.Qt.NoPen)
+
+            for path, brush in current:
+                painter.fillPath(path, brush)
+            file_name = '%s.png' % (hex(ord(char)))
+            targ = os.path.join(target_folder, file_name)
+            pixmap.save(targ, 'PNG')
+            del painter
+            del pixmap
 
     def refresh_preview(self):
         font_info = QFontMetrics(self.font)

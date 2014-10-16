@@ -426,38 +426,46 @@
       <x>440</x>
       <y>30</y>
       <width>351</width>
-      <height>551</height>
+      <height>501</height>
      </rect>
     </property>
+    <zorder>verticalLayoutWidget</zorder>
    </widget>
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
       <x>440</x>
-      <y>590</y>
+      <y>550</y>
       <width>160</width>
-      <height>100</height>
+      <height>134</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="exportSeperateButton">
        <property name="text">
         <string>Export Individual</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="exportGroupButton">
        <property name="text">
         <string>Export Group</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_3">
+      <widget class="QPushButton" name="saveSettingsButton">
        <property name="text">
         <string>Save Settings</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="loadSettingsButton">
+       <property name="text">
+        <string>Load Settings</string>
        </property>
       </widget>
      </item>

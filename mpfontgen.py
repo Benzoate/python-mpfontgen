@@ -3,8 +3,8 @@ import math
 from PyQt5 import QtCore
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import QApplication
-from PyQt5.QtWidgets import QWidget, QMainWindow
-from PyQt5.QtWidgets import QPushButton, QFontDialog, QColorDialog
+from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import QFontDialog, QColorDialog
 import mainwindow
 
 
@@ -41,6 +41,7 @@ class StartQT5(QMainWindow):
         self.ui.shadowAngleBox.valueChanged.connect(self.shadow_angle_changed)
         self.ui.shadowDistanceBox.valueChanged.connect(self.shadow_dist_changed)
         self.ui.shadowSizeBox.valueChanged.connect(self.shadow_size_changed)
+        self.ui.strokeWidthBox.valueChanged.connect(self.stroke_size_changed)
 
         #Update UI
         self.update_values()
@@ -71,6 +72,10 @@ class StartQT5(QMainWindow):
             }
             """ % (self.stroke_color.name()))
         self.ui.strokeWidthBox.setValue(self.stroke_width)
+        self.refresh_preview()
+
+    def stroke_size_changed(self, value):
+        self.stroke_width = float(value)
         self.refresh_preview()
 
     def shadow_size_changed(self, value):
@@ -124,11 +129,12 @@ class StartQT5(QMainWindow):
 
     def get_path_for_char(self, char, baseline):
         ret = []
-        font_info = QFontMetrics(self.font)
+        #font_info = QFontMetrics(self.font)
         if self.ui.dropShadowGroupBox.isChecked():
             shadow_baseline = QtCore.QPointF(baseline)
             shadow_font_path = QPainterPath()
-            shadow_font_brush = QBrush(self.shadow_color, QtCore.Qt.SolidPattern)
+            shadow_font_brush = QBrush(self.shadow_color,
+                                       QtCore.Qt.SolidPattern)
             shadow_offsetx = (math.sin(self.shadow_angle *
                                        ((2.0 * math.pi)/360.0)) *
                               self.shadow_distance)
@@ -144,13 +150,21 @@ class StartQT5(QMainWindow):
             shadow_font_path += stroker.createStroke(shadow_font_path)
             ret.append((shadow_font_path, shadow_font_brush))
 
-
         main_font_path = QPainterPath()
         main_font_brush = QBrush(self.fill_color, QtCore.Qt.SolidPattern)
         main_font_path.addText(baseline, self.font, char)
         ret.append((main_font_path, main_font_brush))
+
         if self.ui.strokeGroupBox.isChecked():
-            pass
+            stroke_baseline = QtCore.QPointF(baseline)
+            stroke_path = QPainterPath()
+            stroke_brush = QBrush(self.stroke_color, QtCore.Qt.SolidPattern)
+            stroker = QPainterPathStroker()
+            stroke_path.addText(stroke_baseline, self.font, char)
+            stroker.setWidth(self.stroke_width)
+            stroker.setJoinStyle(QtCore.Qt.MiterJoin)
+            stroke_path = stroker.createStroke(stroke_path)
+            ret.append((stroke_path, stroke_brush))
         return ret
 
     def refresh_preview(self):
@@ -165,7 +179,7 @@ class StartQT5(QMainWindow):
                 last_base_x = 0
             baseline = QtCore.QPointF(last_base_x,
                                      (1+int(idx/4)) * (font_info.height()
-                                                  + font_info.leading()))
+                                                       + font_info.leading()))
             for path, brush in self.get_path_for_char(char, baseline):
                 paths_brushes.append((path, brush))
             last_base_x += font_info.width(char)
